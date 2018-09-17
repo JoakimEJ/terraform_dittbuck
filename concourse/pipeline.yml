@@ -1,0 +1,22 @@
+jobs:
+- name: deploy-github-teams
+  plan:
+  - aggregate:
+    - get: terraform_dittbuck
+      trigger: true
+  - task: apply
+    file: C:\REPO\PGR301\myOrgRepo\concourse\tasks\terraform\task.yml
+    input_mapping: {source: terraform_dittbuck}
+    params:
+      github_token: ((github_token))
+      command: apply
+      directories: |
+          .
+
+resources:
+
+- name: terraform_dittbuck
+  type: git
+  source:
+    uri: https://github.com/JoakimEJ/terraform_dittbuck.git
+    branch: master
